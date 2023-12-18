@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 // declar route
+
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', [AuthController::class, 'loginIndex'])->name('auth.login');
