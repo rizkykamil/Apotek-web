@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// login
+Route::get('/login', function () {
+    return view('login');
+});
+
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', [AuthController::class, 'loginIndex'])->name('auth.login');
     Route::post('/login', [AuthController::class, 'loginProcess'])->name('auth.login');
+    Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('auth.forgot_password');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 
