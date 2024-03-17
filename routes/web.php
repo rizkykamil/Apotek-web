@@ -18,18 +18,13 @@ use App\Http\Controllers\Auth\AuthController;
 
 // declar route
 
+// jika halaman / diakses, maka akan diarahkan ke halaman home
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('auth/login');
 });
-
-// login
-Route::get('/login', function () {
-    return view('login');
-});
-
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', [AuthController::class, 'loginIndex'])->name('auth.login');
-    Route::post('/login', [AuthController::class, 'loginProcess'])->name('auth.login');
+    Route::post('/login', [AuthController::class, 'loginProcess'])->name('auth.login.process');
     Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('auth.forgot_password');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
