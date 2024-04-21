@@ -21,7 +21,7 @@ use App\Http\Controllers\admin\DashboardController;
 
 // jika halaman / diakses, maka akan diarahkan ke halaman home
 Route::get('/', function () {
-    return redirect('auth/login');
+    return redirect('admin/dashboard');
 });
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', [AuthController::class, 'loginIndex'])->name('auth.login');
@@ -30,7 +30,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');  
 });
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     });
