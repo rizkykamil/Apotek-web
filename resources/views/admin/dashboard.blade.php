@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title', 'Dashboard')
-@section('header-icon', 'bar-chart-2')
+@section('header-icon', 'activity')
 @section('header-title', 'Dashboard')
 @section('header-sub-title' , '')
 @section('content')
