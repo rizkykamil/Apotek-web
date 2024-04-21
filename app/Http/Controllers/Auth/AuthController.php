@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthController extends Controller
 {
+
     public function loginIndex()
     {
         $title = 'Login';
@@ -20,11 +23,10 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
-         
-        $remember = $request->has('remember') ? true : false;
-
-        if (auth()->attempt($request->only('email', 'password'), $remember)) {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember_me') ? true : false;
+        
+        if (Auth::attempt($credentials, $remember)) {
             return redirect()->intended('admin/dashboard');
         }
 
