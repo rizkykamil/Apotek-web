@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +27,12 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', [AuthController::class, 'loginIndex'])->name('auth.login');
     Route::post('/login', [AuthController::class, 'loginProcess'])->name('auth.login.process');
     Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('auth.forgot_password');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');  
 });
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'dashboard'], function () {
-        Route::get('/', [DashboardController::class, 'dashboardIndex'])->name('admin.dashboard');
-        Route::get('/list_user', [DashboardController::class, 'listUser'])->name('admin.list_user');
+        Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     });
 
     Route::group(['prefix' => 'produk'], function () {
