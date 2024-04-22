@@ -8,7 +8,7 @@
                     Dashboards
                 </a>
                 <div class="sidenav-menu-heading">Produk</div>
-                <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                <a class="nav-link {{ request()->is('admin/produk/list_produk') ? 'active' : '' }}" href="{{route("admin.produk.list")}}">
                     <div class="nav-link-icon"><i data-feather="list"></i></div>
                     List Produk
                 </a>

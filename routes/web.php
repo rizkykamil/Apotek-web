@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\admin\DashboardController;
 
 /*
@@ -37,7 +38,6 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'produk'], function () {
         Route::get('/list_produk', [ProdukController::class, 'listProduk'])->name('admin.produk.list');
-        Route::get('/add_produk', [ProdukController::class, 'addProduk'])->name('admin.produk.add');
         Route::post('/save_produk', [ProdukController::class, 'saveProduk'])->name('admin.produk.save');
         Route::get('/edit_produk/{id}', [ProdukController::class, 'editProduk'])->name('admin.produk.edit');
         Route::post('/update_produk/{id}', [ProdukController::class, 'updateProduk'])->name('admin.produk.update');
