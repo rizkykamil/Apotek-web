@@ -60,27 +60,47 @@
 {{-- modal --}}
 @section('id_modal', 'Tambah-produk')
 @section('title_modal', 'Tambah Produk')
+{{-- @section('ukuran_modal', 'modal-lg') --}}
 @section('content_modal')
-<form>
+<form action="{{route('admin.produk.save')}}" method="post">
+    @csrf
     <div class="mb-3">
         <label for="nama_produk" class="form-label">Nama Produk</label>
-        <input type="text" class="form-control" id="nama_produk" aria-describedby="nama_produk">
+        <input type="text" class="form-control" id="nama_produk" aria-describedby="nama_produk" name="nama_produk">
     </div>
     <div class="mb-3">
-        <label for="harga_produk" class="form-label">Harga Produk</label>
-        <input type="text" class="form-control" id="harga_produk">
+        <label for="harga_beli_produk" class="form-label">Harga Beli Produk</label>
+        <input type="number" class="form-control" id="harga_beli_produk" name="harga_beli_produk">
+    </div>
+    <div class="mb-3">
+        <label for="stok_produk" class="form-label">Stok Produk</label>
+        <input type="number" class="form-control" id="stok_produk" name="stok_produk">
+    </div>
+    <div class="mb-3">
+        <label for="harga_jual_produk" class="form-label">Harga Jual Produk</label>
+        <input type="number" class="form-control" id="harga_jual_produk" name="harga_jual_produk">
+    </div>
+    <div class="mb-3">
+        <label for="kategori_produk" class="form-label">Kategori Produk</label>
+        <select class="form-select" id="kategori_produk" aria-label="Default select example" name="kategori_produk">
+            <option selected>Pilih Kategori Produk</option>
+            @foreach ($kategori_produks as $kategori_produk)
+            <option value="{{$kategori_produk->id}}">{{$kategori_produk->nama_kategori}}</option>
+            @endforeach
+        </select>
     </div>
     <div class="mb-3">
         <label for="deskripsi_produk" class="form-label">Deskripsi Produk</label>
-        <textarea class="form-control" id="deskripsi_produk" rows="3"></textarea>
+        <textarea class="form-control" id="deskripsi_produk" rows="3" name="deskripsi_produk"></textarea>
     </div>
+    
     <div class="mb-3">
         <label for="gambar_produk" class="form-label">Gambar Produk</label>
-        <input class="form-control" type="file" id="gambar_produk">
+        <input class="form-control" type="file" id="gambar_produk" name="gambar_produk">
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
 </form>
 @endsection

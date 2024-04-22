@@ -2,19 +2,44 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Produk;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\KategoriProduk;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreListProduk;
 
 class ProdukController extends Controller
 {
     public function listProduk()
     {
-        return view('admin.produk.list_produk');
+        $kategori_produks = KategoriProduk::all();
+        $compact = [
+            'kategori_produks' => $kategori_produks
+        ];
+        return view('admin.produk.list_produk', $compact);
     }
 
-    public function saveProduk(Request $request)
+    public function addProduk()
     {
-        return redirect()->route('admin.produk.list');
+        return view('admin.produk.tambah_produk');
+    }
+
+    public function saveProduk(StoreListProduk $request):RedirectResponse
+    {
+        $data = new Produk();
+        $data->nama_produk = $request->nama_produk;
+        $data->harga_beli_produk = $request->harga_beli_produk;
+        $data->harga_jual_produk = $request->harga_jual_produk;
+        $data->deskripsi_produk = $request->deskripsi_produk;
+        $data->gambar_produk = $request->gambar_produk;
+        $data->stok_produk = $request->stok_produk;
+        $data->kategori_produk_id = $request->kategori_produk;
+        $data->slug = Str::slug($request->nama_produk);
+        $data->save();
+        return redirect()->route('admin.produk.list')->with('success', 'Produk berhasil ditambahkan');
+
     }
 
     public function editProduk($id)
