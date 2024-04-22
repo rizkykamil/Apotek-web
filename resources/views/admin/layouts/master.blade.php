@@ -8,11 +8,13 @@
         @include('admin.partials.sidebar')
         <div id="layoutSidenav_content">
             <main>
+                @include('admin.partials.alert')
                 @include('admin.partials.header')
                 <div class="container-xl px-4 mt-4">
                     @yield('content')
                 </div>
             </main>
+            @include('admin.partials.modal')
             @include('admin.partials.footer')
         </div>
     </div>
