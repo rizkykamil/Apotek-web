@@ -11,48 +11,20 @@
 @section('content')
 <div class="col-md-12">
     <div class="row">
+        @foreach ($list_produk as $item)
         <div class="col-md-3 mb-3">
             <div class="card">
-                <img src="{{asset("img/image_obat/voltaren.jpeg")}}" class="card-img-top " loading="lazy" alt="">
+                <img src="{{asset('img/image_obat/'.$item->gambar_produk)}}" class="card-img-top" style="max-height:185px " loading="lazy" alt="...">
                 <div class="card-body text-center">
-                    <h5 class="card-title">Nama Produk</h5>
-                    <p class="card-text">Rp. 17.000</p>
+                    <h4 class="card-title">{{$item->nama_produk}}</h4>
+                    <p class="card-text text-primary">
+                        Rp. {{number_format($item->harga_jual_produk, 0, ',', '.')}}
+                    </p>
                     <a href="#" class="btn btn-primary">View Detail</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card">
-                <div class="card-header">Example Card</div>
-                <div class="card-body">This is a blank page. You can use this page as a boilerplate for creating new
-                    pages! This page uses the compact page header format, which allows you to create pages with a very
-                    minimal and slim page header so you can get right to showcasing your content.</div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card">
-                <div class="card-header">Example Card</div>
-                <div class="card-body">This is a blank page. You can use this page as a boilerplate for creating new
-                    pages! This page uses the compact page header format, which allows you to create pages with a very
-                    minimal and slim page header so you can get right to showcasing your content.</div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card">
-                <div class="card-header">Example Card</div>
-                <div class="card-body">This is a blank page. You can use this page as a boilerplate for creating new
-                    pages! This page uses the compact page header format, which allows you to create pages with a very
-                    minimal and slim page header so you can get right to showcasing your content.</div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card">
-                <div class="card-header">Example Card</div>
-                <div class="card-body">This is a blank page. You can use this page as a boilerplate for creating new
-                    pages! This page uses the compact page header format, which allows you to create pages with a very
-                    minimal and slim page header so you can get right to showcasing your content.</div>
-            </div>
-        </div>
+        @endforeach
     </div>
 </div>
 @endsection
@@ -60,9 +32,8 @@
 {{-- modal --}}
 @section('id_modal', 'Tambah-produk')
 @section('title_modal', 'Tambah Produk')
-{{-- @section('ukuran_modal', 'modal-lg') --}}
 @section('content_modal')
-<form action="{{route('admin.produk.save')}}" method="post">
+<form action="{{route('admin.produk.save')}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="nama_produk" class="form-label">Nama Produk</label>
@@ -103,4 +74,18 @@
         <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
 </form>
+
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#harga_beli_produk').mask('000.000.000', {
+            reverse: true
+        });
+        $('#harga_jual_produk').mask('000.000.000', {
+            reverse: true
+        });
+    });
+</script>
 @endsection
