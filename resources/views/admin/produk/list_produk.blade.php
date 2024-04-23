@@ -20,7 +20,7 @@
                     <p class="card-text text-primary">
                         Rp. {{number_format($item->harga_jual_produk, 0, ',', '.')}}
                     </p>
-                    <a href="#" class="btn btn-primary">View Detail</a>
+                    <a href="{{route("admin.produk.view", $item->id)}}" class="btn btn-primary">View Detail</a>
                 </div>
             </div>
         </div>

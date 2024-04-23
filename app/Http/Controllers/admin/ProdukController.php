@@ -12,7 +12,7 @@ use App\Http\Requests\StoreListProduk;
 
 class ProdukController extends Controller
 {
-    public function listProduk()
+    public function   listProduk()
     {
         $kategori_produks = KategoriProduk::all();
         $list_produk = Produk::all();
@@ -51,7 +51,11 @@ class ProdukController extends Controller
 
     public function viewProduk($id)
     {
-        return view('admin.produk.view_produk');
+        $list_produk = Produk::find($id);
+        $compact = [
+            'list_produk' => $list_produk
+        ];
+        return view('admin.produk.view_produk',$compact);
     }
     
 

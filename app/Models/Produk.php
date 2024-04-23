@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Produk extends Model
 {
     use HasFactory;
+
+    // join table kategori_produk
+    public function kategori_produk()
+    {
+        return $this->belongsTo(KategoriProduk::class, 'kategori_produk_id', 'id');
+    }
 }
