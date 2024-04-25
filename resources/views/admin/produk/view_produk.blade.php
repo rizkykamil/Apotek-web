@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Detail Produk|{{$list_produk->slug}}
+    Detail Produk | {{$list_produk->slug}}
 @endsection
 @section('header-icon', 'droplet')
 @section('header-title', 'Detail Produk')
@@ -27,7 +27,6 @@
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between">
                     <a href="{{route('admin.produk.list')}}" class="btn btn-primary ">Kembali</a>
-                    <a href="{{route('admin.produk.edit', $list_produk->id)}}" class="btn btn-primary">Edit</a>
                 </div>
             </div>
         </div>
