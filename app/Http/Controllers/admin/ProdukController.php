@@ -89,6 +89,8 @@ class ProdukController extends Controller
 
     public function deleteProduk($id)
     {
-        return redirect()->route('admin.produk.list');
+        $data = Produk::find($id);
+        $data->delete();
+        return redirect()->back()->with('success', 'Produk berhasil dihapus');
     }
 }

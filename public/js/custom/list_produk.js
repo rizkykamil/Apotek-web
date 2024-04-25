@@ -11,11 +11,19 @@ $(document).ready(function () {
 $('body').on('click', '#button_edit_modal', function () {
     let id_button_edit = $(this).data('id');
     $.ajax({
-        url: "/admin/produk/edit_produk/" + id_button_edit, 
+        url: "/admin/produk/edit_produk/" + id_button_edit,
         type: "GET",
         dataType: "JSON",
         success: function (data) {
-            const { id, nama_produk, harga_beli_produk, harga_jual_produk, stok_produk, deskripsi_produk, kategori_produk_id } = data.data_produk;
+            const {
+                id,
+                nama_produk,
+                harga_beli_produk,
+                harga_jual_produk,
+                stok_produk,
+                deskripsi_produk,
+                kategori_produk_id
+            } = data.data_produk;
             $('#id_produk_edit').val(id);
             $('#nama_produk_edit').val(nama_produk);
             $('#harga_beli_produk_edit').val(harga_beli_produk);
@@ -59,7 +67,7 @@ $('#update_produk_button').on('click', function () {
         headers: {
             'X-CSRF-TOKEN': token
         },
-        processData: false, 
+        processData: false,
         contentType: false,
         data: formData,
         success: function (data) {
@@ -74,7 +82,7 @@ $('#update_produk_button').on('click', function () {
             setTimeout(function () {
                 location.reload();
             }, 1000);
-            
+
         },
         error: function (errors) {
             let message = JSON.parse(errors.responseText).message;
@@ -85,6 +93,36 @@ $('#update_produk_button').on('click', function () {
                 showConfirmButton: false,
                 timer: 1500
             });
-        } 
+        }
+    });
+});
+
+// warning button delete produk
+$('body').on('click', '#button_delete_warning', function () {
+    Swal.fire({
+        title: "Apakah anda yakin untuk menghapus produk ini?",
+        showCancelButton: true,
+        confirmButtonText: "Hapus",
+        confirmButtonColor: "#d33",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let id_button_delete = $(this).data('id');
+            $.ajax({
+                url: "/admin/produk/delete_produk/" + id_button_delete,
+                type: "GET",
+                success: function (data) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Produk berhasil dihapus",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                }
+            });
+        }
     });
 });

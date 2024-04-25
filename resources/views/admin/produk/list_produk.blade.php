@@ -32,7 +32,7 @@
                                     </button>
                                 </div>
                                 <div class="p-2 flex-fill">
-                                    <a href="{{route("admin.produk.view", $item->id)}}" class="btn btn-danger">Delete</a>
+                                    <button type="button" class="btn btn-danger" id="button_delete_warning" data-id="{{$item->id}}">Delete</button>
                                 </div>
                             </div>
                         </div>
