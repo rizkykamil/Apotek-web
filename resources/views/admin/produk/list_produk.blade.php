@@ -20,7 +20,7 @@
                     <p class="card-text text-primary">
                         Rp. {{number_format($item->harga_jual_produk, 0, ',', '.')}}
                     </p>
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <div class="d-flex justify-content-center">
                             <div class="d-flex">
                                 <div class="p-2 flex-fill">
@@ -35,6 +35,20 @@
                                     <button type="button" class="btn btn-danger" id="button_delete_warning" data-id="{{$item->id}}">Delete</button>
                                 </div>
                             </div>
+                        </div>
+                    </div> --}}
+
+                    <div class="row">
+                        <div class="d-grid gap-3 d-md-block">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Detail-produk-{{$item->id}}">
+                                Detail
+                            </button>
+
+                            <button type="button" class="btn btn-warning" id="button_edit_modal" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#Edit-produk" >
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-danger" id="button_delete_warning" data-id="{{$item->id}}">Delete</button>
+
                         </div>
                     </div>
                 </div>
