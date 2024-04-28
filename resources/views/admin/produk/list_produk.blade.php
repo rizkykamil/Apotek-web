@@ -14,11 +14,11 @@
         @foreach ($list_produk as $item)
         <div class="col-md-3 mb-3">
             <div class="card">
-                <img src="{{asset('img/image_obat/'.$item->gambar_produk)}}" class="card-img-top" style="max-height:185px " loading="lazy" alt="...">
+                <img src="{{asset('img/image_obat/'.$item->gambar)}}" class="card-img-top" style="max-height:185px " loading="lazy" alt="...">
                 <div class="card-body text-center">
-                    <h4 class="card-title">{{$item->nama_produk}}</h4>
+                    <h4 class="card-title">{{$item->nama}}</h4>
                     <p class="card-text text-primary">
-                        Rp. {{number_format($item->harga_jual_produk, 0, ',', '.')}}
+                        Rp. {{number_format($item->harga_jual, 0, ',', '.')}}
                     </p>
                     <div class="row">
                         <div class="d-grid gap-3 d-md-block">
@@ -67,7 +67,7 @@
         <select class="form-select" id="kategori_produk" aria-label="Default select example" name="kategori_produk">
             <option selected>Pilih Kategori Produk</option>
             @foreach ($kategori_produks as $kategori_produk)
-            <option value="{{$kategori_produk->id}}">{{$kategori_produk->nama_kategori}}</option>
+            <option value="{{$kategori_produk->id}}">{{$kategori_produk->nama}}</option>
             @endforeach
         </select>
     </div>

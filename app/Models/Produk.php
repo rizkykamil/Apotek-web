@@ -27,4 +27,9 @@ class Produk extends Model
     {
         return 'string';
     }
+
+    public function jenisProduk()
+    {
+        return $this->belongsTo(JenisProduk::class, 'jenis_produk_id', 'id');
+    }
 }

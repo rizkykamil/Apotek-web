@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\Stok;
 use App\Models\Produk;
+use App\Models\JenisProduk;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\KategoriProduk;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreListProduk;
@@ -14,7 +14,7 @@ class ProdukController extends Controller
 {
     public function listProduk()
     {
-        $kategori_produks = KategoriProduk::all();
+        $kategori_produks = JenisProduk::all();
         $list_produk = Produk::all();
         $compact = [
             'kategori_produks' => $kategori_produks,
@@ -29,17 +29,22 @@ class ProdukController extends Controller
             $file = $request->file('gambar_produk');
             $filename = time().'_'.$file->getClientOriginalName();
             $file->move('img/image_obat', $filename);
-            $data->gambar_produk = $filename;
+            $data->gambar = $filename;
         }
-        $data->gambar_produk = $filename;
-        $data->nama_produk = $request->nama_produk;
-        $data->harga_beli_produk = $request->harga_beli_produk;
-        $data->harga_jual_produk = $request->harga_jual_produk;
-        $data->deskripsi_produk = $request->deskripsi_produk;
-        $data->stok_produk = $request->stok_produk;
-        $data->kategori_produk_id = $request->kategori_produk;
+        $data->gambar = $filename;
+        $data->nama = $request->nama_produk;
+        $data->harga_beli = $request->harga_beli_produk;
+        $data->harga_jual = $request->harga_jual_produk;
+        $data->deskripsi = $request->deskripsi_produk;
+        $data->jenis_produk_id = $request->kategori_produk;
         $data->slug = Str::slug($request->nama_produk);
         $data->save();
+
+        $data_stok = new Stok();
+        $data_stok->produk_id = $data->id;
+        $data_stok->jumlah = $request->stok_produk;
+        $data_stok->save();
+
         return redirect()->route('admin.produk.list')->with('success', 'Produk berhasil ditambahkan');
     }
 
