@@ -65,7 +65,7 @@
     <div class="mb-3">
         <label for="kategori_produk" class="form-label">Kategori Produk</label>
         <select class="form-select" id="kategori_produk" aria-label="Default select example" name="kategori_produk">
-            <option selected>Pilih Kategori Produk</option>
+            <option selected value="">Pilih Kategori Produk</option>
             @foreach ($kategori_produks as $kategori_produk)
             <option value="{{$kategori_produk->id}}">{{$kategori_produk->nama}}</option>
             @endforeach
@@ -109,9 +109,9 @@
     <div class="mb-3">
         <label for="kategori_produk" class="form-label">Kategori Produk</label>
         <select class="form-select" id="kategori_produk_edit" aria-label="Default select example" name="kategori_produk">
-            <option selected>Pilih Kategori Produk</option>
+            <option selected value="">Pilih Kategori Produk</option>
             @foreach ($kategori_produks as $kategori_produk)
-            <option value="{{$kategori_produk->id}}">{{$kategori_produk->nama_kategori}}</option>
+            <option value="{{$kategori_produk->id}}">{{$kategori_produk->nama}}</option>
             @endforeach
         </select>
     </div>

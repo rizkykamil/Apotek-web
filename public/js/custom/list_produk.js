@@ -27,20 +27,20 @@ $('body').on('click', '#button_edit_modal', function () {
         success: function (data) {
             const {
                 id,
-                nama_produk,
-                harga_beli_produk,
-                harga_jual_produk,
-                stok_produk,
-                deskripsi_produk,
-                kategori_produk_id
+                nama,
+                harga_beli,
+                harga_jual,
+                jumlah,
+                deskripsi,
+                jenis_produk_id
             } = data.data_produk;
             $('#id_produk_edit').val(id);
-            $('#nama_produk_edit').val(nama_produk);
-            $('#harga_beli_produk_edit').val(harga_beli_produk);
-            $('#harga_jual_produk_edit').val(harga_jual_produk);
-            $('#stok_produk_edit').val(stok_produk);
-            $('#deskripsi_produk_edit').val(deskripsi_produk);
-            $('#kategori_produk_edit').val(kategori_produk_id);
+            $('#nama_produk_edit').val(nama);
+            $('#harga_beli_produk_edit').val(harga_beli);
+            $('#harga_jual_produk_edit').val(harga_jual);
+            $('#stok_produk_edit').val(jumlah);
+            $('#deskripsi_produk_edit').val(deskripsi);
+            $('#kategori_produk_edit').val(jenis_produk_id);
             $('#modal_edit').modal('show');
         }
     });
