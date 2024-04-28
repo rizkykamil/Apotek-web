@@ -32,4 +32,9 @@ class Produk extends Model
     {
         return $this->belongsTo(JenisProduk::class, 'jenis_produk_id', 'id');
     }
+
+    public function stok()
+    {
+        return $this->hasOne(Stok::class, 'produk_id', 'id');
+    }
 }
