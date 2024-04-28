@@ -22,7 +22,7 @@
                     </p>
                     <div class="row">
                         <div class="d-grid gap-3 d-md-block">
-                            <a href="{{route("admin.produk.view", $item->id)}}" type="button" class="btn btn-primary">
+                            <a href="{{route("admin.produk.view", $item->slug)}}" type="button" class="btn btn-primary">
                                 Detail
                             </a>
 

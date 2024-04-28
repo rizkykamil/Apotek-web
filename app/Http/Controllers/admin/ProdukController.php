@@ -48,9 +48,9 @@ class ProdukController extends Controller
         return redirect()->route('admin.produk.list')->with('success', 'Produk berhasil ditambahkan');
     }
 
-    public function viewProduk($id)
+    public function viewProduk($slug)
     {
-        $list_produk = Produk::find($id);
+        $list_produk = Produk::where('slug', $slug)->first();
         $compact = [
             'list_produk' => $list_produk
         ];

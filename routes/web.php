@@ -40,7 +40,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
     Route::group(['prefix' => 'produk'], function () {
         Route::get('/list_produk', [ProdukController::class, 'listProduk'])->name('admin.produk.list');
         Route::post('/save_produk', [ProdukController::class, 'saveProduk'])->name('admin.produk.save');
-        Route::get('/view_produk/{id}', [ProdukController::class, 'viewProduk'])->name('admin.produk.view');
+        Route::get('/view_produk/{slug}', [ProdukController::class, 'viewProduk'])->name('admin.produk.view');
         Route::get('/edit_produk/{id}', [ProdukController::class, 'editProduk'])->name('admin.produk.edit');
         Route::post('/update_produk/{id}', [ProdukController::class, 'updateProduk'])->name('admin.produk.update');
         Route::get('/delete_produk/{id}', [ProdukController::class, 'deleteProduk'])->name('admin.produk.delete');
