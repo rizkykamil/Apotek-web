@@ -20,29 +20,11 @@
                     <p class="card-text text-primary">
                         Rp. {{number_format($item->harga_jual_produk, 0, ',', '.')}}
                     </p>
-                    {{-- <div class="col-md-12">
-                        <div class="d-flex justify-content-center">
-                            <div class="d-flex">
-                                <div class="p-2 flex-fill">
-                                    <a href="{{route("admin.produk.view", $item->id)}}" class="btn btn-primary">Detail</a>
-                                </div>
-                                <div class="p-2 flex-fill">
-                                    <button type="button" class="btn btn-warning" id="button_edit_modal" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#Edit-produk" >
-                                        Edit
-                                    </button>
-                                </div>
-                                <div class="p-2 flex-fill">
-                                    <button type="button" class="btn btn-danger" id="button_delete_warning" data-id="{{$item->id}}">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
                     <div class="row">
                         <div class="d-grid gap-3 d-md-block">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Detail-produk-{{$item->id}}">
+                            <a href="{{route("admin.produk.view", $item->id)}}" type="button" class="btn btn-primary">
                                 Detail
-                            </button>
+                            </a>
 
                             <button type="button" class="btn btn-warning" id="button_edit_modal" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#Edit-produk" >
                                 Edit
@@ -70,7 +52,7 @@
     </div>
     <div class="mb-3">
         <label for="harga_beli_produk" class="form-label">Harga Beli Produk</label>
-        <input type="number" class="form-control" id="harga_beli_produk" name="harga_beli_produk">
+        <input type="number" class="form-control" id="harga_beli_produk_tambah" name="harga_beli_produk">
     </div>
     <div class="mb-3">
         <label for="stok_produk" class="form-label">Stok Produk</label>
@@ -78,7 +60,7 @@
     </div>
     <div class="mb-3">
         <label for="harga_jual_produk" class="form-label">Harga Jual Produk</label>
-        <input type="number" class="form-control" id="harga_jual_produk" name="harga_jual_produk">
+        <input type="number" class="form-control" id="harga_jual_produk_tambah" name="harga_jual_produk">
     </div>
     <div class="mb-3">
         <label for="kategori_produk" class="form-label">Kategori Produk</label>

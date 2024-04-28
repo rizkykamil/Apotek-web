@@ -1,8 +1,18 @@
+
 $(document).ready(function () {
-    $('#harga_beli_produk').mask('000.000.000', {
+    $('#harga_beli_produk_tambah').mask('000.000.000', {
         reverse: true
     });
-    $('#harga_jual_produk').mask('000.000.000', {
+    $('#harga_jual_produk_tambah').mask('000.000.000', {
+        reverse: true
+    });
+});
+
+$(document).ready(function () {
+    $('#harga_beli_produk_edit').mask('000.000.000', {
+        reverse: true
+    });
+    $('#harga_jual_produk_edit').mask('000.000.000', {
         reverse: true
     });
 });
