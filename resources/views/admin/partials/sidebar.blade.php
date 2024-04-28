@@ -13,7 +13,7 @@
                     List Produk
                 </a>
                 <div class="sidenav-menu-heading">Transaksi</div>
-                <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                <a class="nav-link {{ request()->is('admin/transaksi/penjualan/list_penjualan') ? 'active' : '' }}" href="{{route("admin.transaksi.penjualan.list")}}">
                     <div class="nav-link-icon"><i data-feather="dollar-sign"></i></div>
                     Penjualan
                 </a>
