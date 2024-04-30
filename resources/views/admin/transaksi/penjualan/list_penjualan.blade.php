@@ -120,7 +120,7 @@
     </div>
     <div class="mb-3">
         <label for="total_harga" class="form-label">Total Harga</label>
-        <input type="number" disabled class="form-control" id="total_harga" name="total_harga">
+        <input type="number"  class="form-control disabled" id="total_harga" name="total_harga" readonly>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -40,14 +40,14 @@ class PenjualanController extends Controller
     {
         $request->validate([
             'kuantitas' => 'required',
-            'harga_barang' => 'required',
+            'total_harga' => 'required',
             'produk' => 'required',
         ]);
 
         $penjualan = new Penjualan();
         $penjualan->produk_id = $request->produk;
         $penjualan->kuantitas = $request->kuantitas;
-        $penjualan->total_harga = $request->harga_barang;
+        $penjualan->total_harga = $request->total_harga;
         $penjualan->save();
 
         return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil disimpan');
