@@ -29,24 +29,21 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <form action="" method="post">
-                    <div class="d-flex align-items-center justify-content-md-end">
-                        @csrf
-                        <div class="me-3">
-                            <label for="tanggal_awal" style="font-size:small; font-color:#0000 !important" >Tanggal Awal</label>
-                            <input type="date" class="form-control" name="tanggal_awal" id="tanggal_awal">
-                        </div>
-                        <div class="me-3">
-                            <label for="tanggal_akhir" style="font-size:small; font-color:#0000">Tanggal Akhir</label>
-                            <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir">
-                        </div>
-                        <div class="me-3 mt-4">
-                            <button class="btn btn-primary">Filter</button>
-                        </div>
+                <div class="d-flex align-items-center justify-content-md-end">
+                    <div class="me-3">
+                        <label for="tanggal_awal" style="font-size:small;">Tanggal Awal</label>
+                        <input type="date" class="form-control" name="tanggal_awal" id="tanggal_awal">
                     </div>
-                </form>
-
+                    <div class="me-3">
+                        <label for="tanggal_akhir" style="font-size:small;">Tanggal Akhir</label>
+                        <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir">
+                    </div>
+                    <div class="me-3 mt-4">
+                        <button id="filter_btn" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
             </div>
+            
         </div>
     </div>
     <div class="card-body">

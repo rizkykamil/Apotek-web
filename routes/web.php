@@ -51,9 +51,8 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
             Route::get('/list_penjualan', [PenjualanController::class, 'listPenjualan'])->name('admin.transaksi.penjualan.list');
             Route::get('/getProductPrice/{id}', [PenjualanController::class, 'getProductPrice'])->name('admin.transaksi.penjualan.getProductPrice');
             Route::post('/save_penjualan', [PenjualanController::class, 'savePenjualan'])->name('admin.transaksi.penjualan.save');
-            Route::get('/edit_penjualan/{id}', [PenjualanController::class, 'editPenjualan'])->name('admin.transaksi.penjualan.edit');
-            Route::post('/update_penjualan/{id}', [PenjualanController::class, 'updatePenjualan'])->name('admin.transaksi.penjualan.update');
-            Route::get('/delete_penjualan/{id}', [PenjualanController::class, 'deletePenjualan'])->name('admin.transaksi.penjualan.delete');
+            // filter tanggal penjualan
+            Route::post('/filter_penjualan', [PenjualanController::class, 'filterPenjualan'])->name('admin.transaksi.penjualan.filter');
         });
     
         Route::group(['prefix'=> 'pembelian'], function () {

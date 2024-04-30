@@ -53,23 +53,22 @@ class PenjualanController extends Controller
         return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil disimpan');
     }
 
-    public function editPenjualan($id)
-    {
-        return view('admin.transaksi.penjualan.edit_penjualan');
-    }
+    public function filterPenjualan(Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
 
-    public function updatePenjualan()
-    {
-        return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil diupdate');
-    }
+        $data_penjualan = Penjualan::
+        join('produks', 'penjualans.produk_id', '=', 'produks.id')->
+        whereBetween('penjualans.created_at', [$start_date, $end_date])
+        ->select('penjualans.*', 'produks.nama as produk')
+        ->get();
 
-    public function deletePenjualan($id)
-    {
-        return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil dihapus');
-    }
-    public function detailPenjualan($id)
-    {
-        return view('admin.transaksi.penjualan.detail_penjualan');
+        $data_penjualan->map(function ($penjualan) {
+            $penjualan->tanggal = date('d-m-Y', strtotime($penjualan->created_at));
+        });
+        
+        // dd($data_penjualan);
+        return json_encode($data_penjualan);
     }
     
 }
