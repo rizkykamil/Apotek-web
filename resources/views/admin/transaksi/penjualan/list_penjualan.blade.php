@@ -11,9 +11,11 @@
                 <button class="btn btn-primary btn-sm">Print</button>
             </div>
             <div class="me-3">
-                <button class="btn btn-primary btn-sm">Tambah Penjualan</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#Tambah-penjualan">
+                    Tambah Penjualan
+                </button>
             </div>
-        </div>
+        </div>  
     </div>
 </div>
 @endsection
@@ -48,7 +50,7 @@
         </div>
     </div>
     <div class="card-body">
-        <table id="myTable" class="table">
+        <table id="table_penjualan" class="table">
             <thead>
                 <tr>
                     <th>
@@ -58,7 +60,7 @@
                         Produk
                     </th>
                     <th>
-                        qty
+                        kuantitas
                     </th>
                     <th>
                         Total Harga
@@ -69,44 +71,62 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($data_penjualan as $item)
                 <tr>
                     <td>
-                        2021-10-10
+                        {{$item->tanggal}}
                     </td>
                     <td>
-                        Obat Batuk
+                        {{$item->produk->nama}}
                     </td>
                     <td>
-                        10
+                        {{$item->kuantitas}}
                     </td>
                     <td>
-                        100000
+                        {{$item->total_harga}}
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-sm">Detail</button>
+                        {{-- <a href="{{route('admin.transaksi.penjualan.detail', $item->id)}}" class="btn btn-primary btn-sm">Detail</a> --}}
+                        <a href="" class="btn btn-primary btn-sm">Detail</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        2021-10-10
-                    </td>
-                    <td>
-                        Obat Batuk
-                    </td>
-                    <td>
-                        10
-                    </td>
-                    <td>
-                        100000
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm">Detail</button>
-                    </td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
+@endsection
+
+@section('title_modal_tambah_penjualan', 'Tambah Penjualan')
+@section('content_modal_tambah_penjualan')
+<form action="{{route('admin.transaksi.penjualan.save')}}" method="post">
+    @csrf
+    <div class="mb-3">
+        <label for="produk" class="form-label">Produk</label>
+        <select class="form-select" id="produk" aria-label="Default select example" name="produk">
+            <option selected value="">Pilih Produk</option>
+            @foreach ($data_produk as $item)
+            <option value="{{$item->id}}">{{$item->nama}}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="harga_barang" class="form-label">Harga Barang</label>
+        <input type="number" class="form-control disabled" id="harga_barang" name="harga_barang" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="kuantitas" class="form-label">Kuantitas</label>
+        <input type="number" class="form-control" id="kuantitas" name="kuantitas">
+    </div>
+    <div class="mb-3">
+        <label for="total_harga" class="form-label">Total Harga</label>
+        <input type="number" disabled class="form-control" id="total_harga" name="total_harga">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
 @endsection
 
 @section('scripts')

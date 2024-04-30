@@ -27,4 +27,8 @@ class Penjualan extends Model
     {
         return 'string';
     }
+
+    public function produk() {
+        return $this->belongsTo(Produk::class, 'produk_id', 'id');
+    }
 }

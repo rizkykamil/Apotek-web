@@ -2,24 +2,55 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Produk;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PenjualanController extends Controller
 {
     public function listPenjualan()
     {
-        return view('admin.transaksi.penjualan.list_penjualan');
+        $data_penjualan = Penjualan::get();
+        foreach ($data_penjualan as $penjualan) {
+            $penjualan->tanggal = date('d-m-Y', strtotime($penjualan->created_at));
+        }
+
+        $data_produk = Produk::select('id','nama')->get();
+        // mendapatkan harga_jual sesuai produk
+        foreach ($data_produk as $produk) {
+            $produk->harga_jual = Produk::find($produk->id)->harga_jual;
+        }
+
+        $compact = [
+            'data_penjualan' => $data_penjualan,
+            'data_produk' => $data_produk,
+        ];
+        return view('admin.transaksi.penjualan.list_penjualan', $compact);
     }
 
-    public function addPenjualan()
+    public function getProductPrice($id)
     {
-        return view('admin.transaksi.penjualan.add_penjualan');
+        $id = request()->id;
+        $harga_jual = Produk::find($id)->harga_jual;
+        return response()->json(['harga_jual' => $harga_jual]);
     }
 
-    public function savePenjualan()
+    public function savePenjualan(Request $request)
     {
-        return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil ditambahkan');
+        $request->validate([
+            'kuantitas' => 'required',
+            'harga_barang' => 'required',
+            'produk' => 'required',
+        ]);
+
+        $penjualan = new Penjualan();
+        $penjualan->produk_id = $request->produk;
+        $penjualan->kuantitas = $request->kuantitas;
+        $penjualan->total_harga = $request->harga_barang;
+        $penjualan->save();
+
+        return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil disimpan');
     }
 
     public function editPenjualan($id)

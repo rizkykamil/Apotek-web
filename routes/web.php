@@ -49,7 +49,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
     Route::group(['prefix'=> 'transaksi'], function () {
         Route::group(['prefix'=> 'penjualan'], function () {
             Route::get('/list_penjualan', [PenjualanController::class, 'listPenjualan'])->name('admin.transaksi.penjualan.list');
-            Route::get('/add_penjualan', [PenjualanController::class, 'addPenjualan'])->name('admin.transaksi.penjualan.add');
+            Route::get('/getProductPrice/{id}', [PenjualanController::class, 'getProductPrice'])->name('admin.transaksi.penjualan.getProductPrice');
             Route::post('/save_penjualan', [PenjualanController::class, 'savePenjualan'])->name('admin.transaksi.penjualan.save');
             Route::get('/edit_penjualan/{id}', [PenjualanController::class, 'editPenjualan'])->name('admin.transaksi.penjualan.edit');
             Route::post('/update_penjualan/{id}', [PenjualanController::class, 'updatePenjualan'])->name('admin.transaksi.penjualan.update');
