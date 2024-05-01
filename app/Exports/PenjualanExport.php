@@ -23,27 +23,27 @@ class PenjualanExport implements FromCollection, WithHeadings, ShouldAutoSize
     }
 
     public function collection()
-{
-    $penjualans = Penjualan::query()
-        ->join('produks', 'penjualans.produk_id', '=', 'produks.id')
-        ->whereBetween('penjualans.created_at', [$this->startDate, $this->endDate])
-        ->select('penjualans.created_at', 'produks.nama as produk', 'penjualans.kuantitas', 'penjualans.total_harga')
-        ->get();
+    {
+        $penjualans = Penjualan::query()
+            ->join('produks', 'penjualans.produk_id', '=', 'produks.id')
+            ->whereBetween('penjualans.created_at', [$this->startDate, $this->endDate])
+            ->select('penjualans.created_at', 'produks.nama as produk', 'penjualans.kuantitas', 'penjualans.total_harga')
+            ->get();
 
-    $penjualans->map(function ($penjualan) {
-        $penjualan->tanggal = $penjualan->created_at->format('d-m-Y');
-        unset($penjualan->created_at); // remove the original created_at column
-    });
+        $penjualans->map(function ($penjualan) {
+            $penjualan->tanggal = $penjualan->created_at->format('d-m-Y');
+            unset ($penjualan->created_at); // remove the original created_at column
+        });
 
-    return $penjualans->map(function ($penjualan) {
-        return [
-            'Tanggal' => $penjualan->tanggal,
-            'Nama Produk' => $penjualan->produk,
-            'Kuantitas' => $penjualan->kuantitas,
-            'Total Harga' => $penjualan->total_harga,
-        ];
-    });
-}
+        return $penjualans->map(function ($penjualan) {
+            return [
+                'Tanggal' => $penjualan->tanggal,
+                'Nama Produk' => $penjualan->produk,
+                'Kuantitas' => $penjualan->kuantitas,
+                'Total Harga' => $penjualan->total_harga,
+            ];
+        });
+    }
 
     public function headings(): array
     {

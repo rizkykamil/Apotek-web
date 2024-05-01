@@ -57,13 +57,30 @@ $(document).ready(function () {
 const startDateInput = document.getElementById('startDate');
 const endDateInput = document.getElementById('endDate');
 const printButton = document.getElementById('printButton');
+const exportButton = document.getElementById('export-button');
 const printableContent = document.getElementById('printableContent');
 
 printButton.addEventListener('click', function () {
     if (!startDateInput.value || !endDateInput.value) {
-        alert('Please select both start and end dates.');
+        // sweet alert
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Tanggal awal dan tanggal akhir harus diisi!",
+        });
         return;
     }
+    if (startDateInput.value > endDateInput.value) {
+        // sweet alert
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Tanggal awal tidak boleh lebih besar dari tanggal akhir!",
+        });
+        return;
+
+    }
+
 
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
@@ -78,7 +95,6 @@ printButton.addEventListener('click', function () {
             printWindow.document.write('<table border="1">');
             printWindow.document.write('<tr><th>Tanggal</th><th>Produk</th><th>Kuantitas</th><th>Total Harga</th></tr>');
             dataPenjualan.forEach(item => {
-
                 printWindow.document.write(`<tr><td>${item.tanggal}</td><td>${item.produk}</td><td>${item.kuantitas}</td><td>${item.total_harga}</td></tr>`);
             });
 
@@ -88,7 +104,28 @@ printButton.addEventListener('click', function () {
         });
 });
 
+exportButton.addEventListener('click', function () {
+    if (!startDateInput.value || !endDateInput.value) {
+        // sweet alert
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Tanggal awal dan tanggal akhir harus diisi!",
+        });
+        return;
+    }
 
+    if (startDateInput.value > endDateInput.value) {
+        // sweet alert
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Tanggal awal tidak boleh lebih besar dari tanggal akhir!",
+        });
+        return;
+
+    }
+});
 
 
 
