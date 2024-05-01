@@ -53,6 +53,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
             Route::post('/save_penjualan', [PenjualanController::class, 'savePenjualan'])->name('admin.transaksi.penjualan.save');
             Route::post('/filter_penjualan', [PenjualanController::class, 'filterPenjualan'])->name('admin.transaksi.penjualan.filter');
             Route::get('/print_penjualan', [PenjualanController::class, 'printPenjualan'])->name('admin.transaksi.penjualan.print');
+            Route::post('/export_excel', [PenjualanController::class, 'exportExcel'])->name('admin.transaksi.penjualan.export');
         });
     
         Route::group(['prefix'=> 'pembelian'], function () {

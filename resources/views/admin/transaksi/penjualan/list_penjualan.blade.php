@@ -110,7 +110,8 @@
 
 @section('title_modal_print_penjualan', 'Tambah Print Penjualan')
 @section('content_modal_print_penjualan')
-<form id="dateForm">
+<form id="dateForm" action="{{route('admin.transaksi.penjualan.export')}}" method="post">
+    @csrf
     <div class="mb-3">
         <label for="startDate" class="form-label">Tanggal Awal:</label>
         <input type="date" class="form-control" id="startDate" name="startDate">
@@ -121,6 +122,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Export to Excel</button>
         <button type="button" class="btn btn-primary"  id="printButton">Print</button>
     </div>
 </form>

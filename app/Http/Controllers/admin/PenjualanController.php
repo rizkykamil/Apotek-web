@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Models\Produk;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use App\Exports\PenjualanExport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PenjualanController extends Controller
 {
@@ -91,6 +93,12 @@ class PenjualanController extends Controller
         ];
 
         return response()->json(['data' => $compact]);
+    }
+
+    public function exportExcel(Request $request) {
+        $tanggal_awal = $request->startDate;
+        $tanggal_akhir = $request->endDate;
+        return Excel::download(new PenjualanExport($tanggal_awal,$tanggal_akhir), 'penjualan'.$tanggal_awal.'-'.$tanggal_akhir.'.xlsx');
     }
     
 }
