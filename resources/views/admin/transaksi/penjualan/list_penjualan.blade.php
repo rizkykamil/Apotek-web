@@ -8,7 +8,9 @@
     <div class="col-md-12">
         <div class="d-flex align-items-center justify-content-md-end">
             <div class="me-3">
-                <button class="btn btn-primary btn-sm">Print</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#Print-penjualan">
+                    Print
+                </button>
             </div>
             <div class="me-3">
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#Tambah-penjualan">
@@ -50,42 +52,22 @@
         <table id="table_penjualan" class="table">
             <thead>
                 <tr>
-                    <th>
-                        Tanngal
-                    </th>
-                    <th>
-                        Produk
-                    </th>
-                    <th>
-                        kuantitas
-                    </th>
-                    <th>
-                        Total Harga
-                    </th>
-                    <th>
-                        Action
-                    </th>
+                    <th>Tanngal</th>
+                    <th>Produk</th>
+                    <th>kuantitas</th>
+                    <th>Total Harga</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data_penjualan as $item)
                 <tr>
-                    <td>
-                        {{$item->tanggal}}
-                    </td>
-                    <td>
-                        {{$item->produk->nama}}
-                    </td>
-                    <td>
-                        {{$item->kuantitas}}
-                    </td>
-                    <td>
-                        {{$item->total_harga}}
-                    </td>
-                    <td>
-                        {{-- <a href="{{route('admin.transaksi.penjualan.detail', $item->id)}}" class="btn btn-primary btn-sm">Detail</a> --}}
-                        <a href="" class="btn btn-primary btn-sm">Detail</a>
-                    </td>
+                    <td>{{$item->tanggal}}</td>
+                    <td>{{$item->produk->nama}}</td>
+                    <td>{{$item->kuantitas}}</td>
+                    <td>{{$item->total_harga}}</td>
+                    <td><a href="" class="btn btn-primary btn-sm">Detail</a></td>
+                    {{-- <a href="{{route('admin.transaksi.penjualan.detail', $item->id)}}" class="btn btn-primary btn-sm">Detail</a> --}}
                 </tr>
                 @endforeach
             </tbody>
@@ -122,6 +104,24 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+@endsection
+
+@section('title_modal_print_penjualan', 'Tambah Print Penjualan')
+@section('content_modal_print_penjualan')
+<form id="dateForm">
+    <div class="mb-3">
+        <label for="startDate" class="form-label">Tanggal Awal:</label>
+        <input type="date" class="form-control" id="startDate" name="startDate">
+    </div>
+    <div class="mb-3">
+        <label for="endDate" class="form-label" >Tanggal Akhir:</label>
+        <input type="date" class="form-control" id="endDate" name="endDate">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  id="printButton">Print</button>
     </div>
 </form>
 @endsection

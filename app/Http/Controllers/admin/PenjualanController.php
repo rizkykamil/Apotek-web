@@ -67,8 +67,30 @@ class PenjualanController extends Controller
             $penjualan->tanggal = date('d-m-Y', strtotime($penjualan->created_at));
         });
         
-        // dd($data_penjualan);
         return json_encode($data_penjualan);
+    }
+
+    public function printPenjualan(Request $request) {
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+
+        $data_penjualan = Penjualan::
+        join('produks', 'penjualans.produk_id', '=', 'produks.id')->
+        whereBetween('penjualans.created_at', [$startDate, $endDate])
+        ->select('penjualans.*', 'produks.nama as produk')
+        ->get();
+
+        $data_penjualan->map(function ($penjualan) {
+            $penjualan->tanggal = date('d-m-Y', strtotime($penjualan->created_at));
+        });
+
+        $compact = [
+            'data_penjualan' => $data_penjualan,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ];
+
+        return response()->json(['data' => $compact]);
     }
     
 }
