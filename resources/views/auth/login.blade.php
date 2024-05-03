@@ -23,7 +23,6 @@
                 <div class="container-xl px-4">
                     <div class="row justify-content-center">
                         <div class="col-lg-5 mt-5">
-                            {{-- alert error or success --}}
                             @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <span>{{session('error')}}</span>
@@ -36,7 +35,6 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             @endif
-                            {{-- end alert error or success --}}
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
                                 <div class="card-header justify-content-center">
                                     <h3 class=" my-4 text-center">Login</h3>
@@ -45,14 +43,12 @@
                                     <!-- Login form-->
                                     <form action="{{route('auth.login.process')}}" method="post">
                                         @csrf
-                                        <!-- Form Group (email address)-->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputEmailAddress">Email</label>
                                             <input class="form-control" id="inputEmailAddress" type="email" name="email"
                                             value="{{ $email }}"
                                                 placeholder="Enter email address" />
                                         </div>
-                                        <!-- Form Group (password)-->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputPassword">Password</label>
                                             <div class="input-group">
@@ -64,7 +60,6 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <!-- Form Group (remember password checkbox)-->
                                         <div class="mb-3">
                                             <div class="form-check">
                                                 <input class="form-check-input" id="rememberPasswordCheck" type="checkbox" name="remember_me" value="{{$remember}}" {{$remember ? 'checked' : ''}}/>
@@ -72,7 +67,6 @@
                                                     password</label>
                                             </div>
                                         </div>
-                                        <!-- Form Group (login box)-->
                                         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <a class="small" href="{{route('auth.forgot_password')}}">Forgot Password?</a>
                                             <button type="submit" class="btn btn-primary">Login</button>
