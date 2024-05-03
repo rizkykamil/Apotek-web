@@ -49,19 +49,20 @@
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputEmailAddress">Email</label>
                                             <input class="form-control" id="inputEmailAddress" type="email" name="email"
+                                            value="{{ $email }}"
                                                 placeholder="Enter email address" />
                                         </div>
                                         <!-- Form Group (password)-->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputPassword">Password</label>
                                             <input class="form-control" id="inputPassword" type="password" name="password"
+                                            value="{{ $password }}"
                                                 placeholder="Enter password" />
                                         </div>
                                         <!-- Form Group (remember password checkbox)-->
                                         <div class="mb-3">
                                             <div class="form-check">
-                                                <input class="form-check-input" id="rememberPasswordCheck"
-                                                    type="checkbox" name="remember_me" />
+                                                <input class="form-check-input" id="rememberPasswordCheck" type="checkbox" name="remember_me" value="{{$remember}}" {{$remember ? 'checked' : ''}}/>
                                                 <label class="form-check-label" for="rememberPasswordCheck">Remember
                                                     password</label>
                                             </div>

@@ -107,7 +107,7 @@
                     <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
                     Account
                 </a>
-                <a class="dropdown-item" href="starter-minimal.html#!">
+                <a class="dropdown-item" href="{{route("auth.logout")}}">
                     <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
                     Logout
                 </a>
