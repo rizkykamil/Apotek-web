@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\Stok;
 use App\Models\Produk;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Exports\PenjualanExport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 class PenjualanController extends Controller
 {
@@ -19,7 +21,6 @@ class PenjualanController extends Controller
         }
 
         $data_produk = Produk::select('id','nama')->get();
-        // mendapatkan harga_jual sesuai produk
         foreach ($data_produk as $produk) {
             $produk->harga_jual = Produk::find($produk->id)->harga_jual;
         }
@@ -46,11 +47,20 @@ class PenjualanController extends Controller
             'produk' => 'required',
         ]);
 
+        $stok = Stok::where('produk_id', $request->produk)->first();
+        if($stok->jumlah < $request->kuantitas){
+            return back()->with('error', 'Stok tidak mencukupi');
+        }
+        $stok->jumlah -= $request->kuantitas;
+
+        $stok->save();
+
         $penjualan = new Penjualan();
         $penjualan->produk_id = $request->produk;
         $penjualan->kuantitas = $request->kuantitas;
         $penjualan->total_harga = $request->total_harga;
         $penjualan->save();
+
 
         return redirect()->route('admin.transaksi.penjualan.list')->with('success', 'Penjualan berhasil disimpan');
     }
