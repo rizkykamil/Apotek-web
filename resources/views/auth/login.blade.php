@@ -55,9 +55,14 @@
                                         <!-- Form Group (password)-->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputPassword">Password</label>
-                                            <input class="form-control" id="inputPassword" type="password" name="password"
-                                            value="{{ $password }}"
-                                                placeholder="Enter password" />
+                                            <div class="input-group">
+                                                <input class="form-control" id="inputPassword" type="password" name="password"
+                                                value="{{ $password }}"
+                                                    placeholder="Enter password" />
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                         <!-- Form Group (remember password checkbox)-->
                                         <div class="mb-3">
@@ -101,6 +106,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="{{asset('js/scripts.js')}}"></script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#inputPassword');
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('bi-eye');
+            if (type === 'password') {
+                this.innerHTML = '<i class="fas fa-eye"></i>';
+            } else {
+                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+        });
+    </script>
 
     <script src="https://assets.startbootstrap.com/js/sb-customizer.js"></script>
 </body>
