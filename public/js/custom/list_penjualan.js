@@ -32,7 +32,7 @@ $(document).ready(function () {
                         data.produk,
                         data.kuantitas,
                         data.total_harga,
-                        `<button class="btn btn-primary" data-toggle="modal" data-target="#modal-detail" data-id="${data.id}">Detail</button>`
+                        `<button class="btn btn-primary" type="button"  data-bs-toggle="modal" data-bs-target="#detail-penjualan" data-id="${data.id}">Detail</button>`
                     ]).draw(false);
                 });
             }

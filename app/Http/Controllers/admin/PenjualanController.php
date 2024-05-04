@@ -24,10 +24,13 @@ class PenjualanController extends Controller
         foreach ($data_produk as $produk) {
             $produk->harga_jual = Produk::find($produk->id)->harga_jual;
         }
+        $notificationController = new NotificationController();
+        $notification = $notificationController->listNotification();
 
         $compact = [
             'data_penjualan' => $data_penjualan,
             'data_produk' => $data_produk,
+            'notification' => $notification,
         ];
         return view('admin.transaksi.penjualan.list_penjualan', $compact);
     }

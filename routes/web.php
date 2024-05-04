@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\PenjualanController;
+use App\Http\Controllers\admin\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,11 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+    });
+
+    Route::group(['prefix' => 'notification'], function () {
+        Route::get('/list_notification', [NotificationController::class, 'listNotification'])->name('admin.notification.list');
+        Route::get('/view_all_notification', [NotificationController::class, 'viewAllNotification'])->name('admin.notification.list');
     });
 
     Route::group(['prefix' => 'produk'], function () {

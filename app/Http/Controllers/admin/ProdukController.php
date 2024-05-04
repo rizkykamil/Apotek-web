@@ -16,9 +16,12 @@ class ProdukController extends Controller
     {
         $kategori_produks = JenisProduk::all();
         $list_produk = Produk::all();
+        $notificationController = new NotificationController();
+        $notification = $notificationController->listNotification();
         $compact = [
             'kategori_produks' => $kategori_produks,
-            'list_produk' => $list_produk
+            'list_produk' => $list_produk,
+            'notification' => $notification
         ];
         return view('admin.produk.list_produk', $compact);
     }
@@ -51,8 +54,11 @@ class ProdukController extends Controller
     public function viewProduk($slug)
     {
         $list_produk = Produk::where('slug', $slug)->first();
+        $notificationController = new NotificationController();
+        $notification = $notificationController->listNotification();
         $compact = [
-            'list_produk' => $list_produk
+            'list_produk' => $list_produk,
+            'notification' => $notification
         ];
         return view('admin.produk.view_produk',$compact);
     }
@@ -65,6 +71,7 @@ class ProdukController extends Controller
             ->select('produks.*', 'jenis_produks.nama as jenis_produk', 'stoks.jumlah')
             ->where('produks.id', $id)
             ->first();
+        
         $compact = [
             'data_produk' => $data_produk,
         ];

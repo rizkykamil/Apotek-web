@@ -128,6 +128,11 @@
 </form>
 @endsection
 
+@section('title_modal_detail_penjualan', 'Detail Penjualan')
+@section('content_modal_detail_penjualan')
+
+@endsection
+
 @section('scripts')
 <script src="{{asset("js/custom/list_penjualan.js")}}"></script>
 @endsection
