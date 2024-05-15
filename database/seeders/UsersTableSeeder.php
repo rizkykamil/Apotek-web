@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Ramsey\Uuid\Uuid;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,12 +13,23 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            // rondom uuid
-            'id' => \Ramsey\Uuid\Uuid::uuid4(),
+        $admin = [
+            'id' => Uuid::uuid4(),
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
+            'role' => 'admin',
             'password' => bcrypt('admin123'),
-        ]);
+        ];
+
+        $operator = [
+            'id' => Uuid::uuid4(),
+            'name' => 'Oprator',
+            'email' => 'op@gmail.com',
+            'role' => 'operator',
+            'password' => bcrypt('oprator123'),
+        ];
+
+        DB::table('users')->insert($admin);
+        DB::table('users')->insert($operator);
     }
 }
