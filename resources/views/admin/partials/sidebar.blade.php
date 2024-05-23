@@ -17,7 +17,7 @@
                     <div class="nav-link-icon"><i data-feather="dollar-sign"></i></div>
                     Penjualan
                 </a>
-                <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseComponents" aria-expanded="false" aria-controls="collapseComponents">
+                <a class="nav-link {{ request()->is('admin/transaksi/pembelian/list_pembelian') ? 'active' : '' }} " href="{{route("admin.transaksi.pembelian.list")}}">
                     <div class="nav-link-icon"><i data-feather="refresh-ccw"></i></div>
                     Pembelian
                 </a>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\PembelianController;
 use App\Http\Controllers\admin\PenjualanController;
 use App\Http\Controllers\admin\NotificationController;
 

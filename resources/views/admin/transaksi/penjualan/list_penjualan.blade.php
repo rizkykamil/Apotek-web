@@ -52,7 +52,7 @@
         <table id="table_penjualan" class="table">
             <thead>
                 <tr>
-                    <th>Tanngal</th>
+                    <th>Tanggal</th>
                     <th>Produk</th>
                     <th>kuantitas</th>
                     <th>Total Harga</th>
