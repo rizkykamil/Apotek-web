@@ -10,6 +10,7 @@
 </head>
 <body>
     <h1>Payment Form</h1>
+    <img src="{{asset("assets/img/illustrations/profiles/")}}" alt="">
     <form id="payment-form" action="{{route('process-payment')}}" method="POST">
         @csrf
         <label for="amount">Amount:</label>
@@ -47,8 +48,8 @@
                     snap.pay(data.snap_token, {
                         // Optional
                         onSuccess: function(result) {
-                            /* You may add your own implementation here */
-                            alert("Payment Success!"); console.log(result);
+                            // pindah kehalaman dashboard
+                            window.location.href = "{{route('admin.dashboard')}}";
                         },
                         // Optional
                         onPending: function(result) {

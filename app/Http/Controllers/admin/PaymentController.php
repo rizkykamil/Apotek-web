@@ -25,14 +25,6 @@ class PaymentController extends Controller
                 'order_id' => uniqid(),
                 'gross_amount' => $request->amount,
             ],
-            'credit_card' => [
-                'secure' => true,
-                'card_number' => $request->card_number,
-                'card_exp_month' => $request->card_exp_month,
-                'card_exp_year' => $request->card_exp_year,
-                'card_cvv' => $request->card_cvv,
-                'card_holder_name' => $request->card_holder_name,
-            ],
             'customer_details' => [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
