@@ -267,24 +267,32 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-document.querySelector('.bayar_nanti').addEventListener('click', function() {
-    const orderId = this.getAttribute('data-order-id');
+document.querySelectorAll('.bayar_nanti').forEach(button => {
+    button.addEventListener('click', function() {
+        const orderId = this.getAttribute('data-order-id');
+        console.log('Order ID:', orderId);
 
-    fetch('/admin/transaksi/penjualan/bayar-nanti', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ order_id: orderId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.snap_token) {
-            window.snap.pay(data.snap_token);
-        } else {
-            console.error('Snap token not found');
-        }
-    })
-    .catch(error => console.error('Error fetching snap token:', error));
+        fetch('/admin/transaksi/penjualan/bayar-nanti', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ order_id: orderId })
+        })
+        .then(response => {
+            console.log('Fetch response:', response);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetch data:', data);
+            if (data.snap_token) {
+                console.log('Snap token:', data.snap_token);
+                window.snap.pay(data.snap_token);
+            } else {
+                console.error('Snap token not found');
+            }
+        })
+        .catch(error => console.error('Error fetching snap token:', error));
+    });
 });
