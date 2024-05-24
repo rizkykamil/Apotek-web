@@ -62,6 +62,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             Route::post('/filter_penjualan', [PenjualanController::class, 'filterPenjualan'])->name('admin.transaksi.penjualan.filter');
             Route::get('/print_penjualan', [PenjualanController::class, 'printPenjualan'])->name('admin.transaksi.penjualan.print');
             Route::post('/export_excel', [PenjualanController::class, 'exportExcel'])->name('admin.transaksi.penjualan.export');
+            Route::post('/non-cash',[PenjualanController::class, 'nonCash'])->name('admin.transaksi.penjualan.nonCash');
+            Route::post('/notification-non-cash',[PenjualanController::class, 'notificationNonCash'])->name('admin.transaksi.penjualan.notificationNonCash');
+            Route::post('/bayar-nanti', [PenjualanController::class, 'getSnapTokenByOrderId'])->name('admin.transaksi.penjualan.getSnapTokenByOrderId');
         });
 
         Route::group(['prefix' => 'pembelian'], function () {

@@ -136,3 +136,4 @@ $('body').on('click', '#button_delete_warning', function () {
         }
     });
 });
+

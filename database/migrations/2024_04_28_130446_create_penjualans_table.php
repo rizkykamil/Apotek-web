@@ -15,6 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->integer('kuantitas');
             $table->integer('total_harga');
+            $table->enum('status', ['pending', 'success', 'cancel'])->default('pending');
+            $table->string('order_id_midtrans')->nullable();
+            $table->string('snap_token')->nullable();
             $table->timestamps();
         });
     }

@@ -52,21 +52,32 @@
         <table id="table_penjualan" class="table">
             <thead>
                 <tr>
+                    <th>order_id</th>
                     <th>Tanggal</th>
                     <th>Produk</th>
                     <th>kuantitas</th>
                     <th>Total Harga</th>
+                    <th>status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data_penjualan as $item)
                 <tr>
+                    {{-- jika order_id == null maka tertulis cash --}}
+                    <td>{{$item->order_id_midtrans}}</td>
                     <td>{{$item->tanggal}}</td>
                     <td>{{$item->produk->nama}}</td>
                     <td>{{$item->kuantitas}}</td>
                     <td>{{$item->total_harga}}</td>
-                    <td><a href="" class="btn btn-primary btn-sm">Detail</a></td>
+                    <td>{{$item->status}}</td>
+                    <td>
+                        <a href="" class="btn btn-primary btn-sm">Detail</a>
+                        @if ($item->status == 'pending' )
+                            <button type="button" id="bayar_nanti" class="btn btn-success btn-sm bayar_nanti" data-order-id="{{ $item->order_id_midtrans }}">bayar</button>
+                        @else
+                        @endif
+                    </td>
                     {{-- <a href="{{route('admin.transaksi.penjualan.detail', $item->id)}}" class="btn btn-primary btn-sm">Detail</a> --}}
                 </tr>
                 @endforeach
@@ -78,34 +89,40 @@
 
 @section('title_modal_tambah_penjualan', 'Tambah Penjualan')
 @section('content_modal_tambah_penjualan')
-<form action="{{route('admin.transaksi.penjualan.save')}}" method="post">
+<form id="form-penjualan" action="{{route('admin.transaksi.penjualan.save')}}" method="post">
     @csrf
-    <div class="mb-3">
-        <label for="produk" class="form-label">Produk</label>
-        <select class="form-select" id="produk" aria-label="Default select example" name="produk">
-            <option selected value="">Pilih Produk</option>
-            @foreach ($data_produk as $item)
-            <option value="{{$item->id}}">{{$item->nama}}</option>
-            @endforeach
-        </select>
+    <div id="produk-container">
+        <div class="produk-item mb-3">
+            <label for="produk" class="form-label">Produk</label>
+            <select class="form-select produk-select" id="produk" aria-label="Default select example" name="produk[]">
+                <option selected value="">Pilih Produk</option>
+                @foreach ($data_produk as $item)
+                <option value="{{$item->id}}">{{$item->nama}}</option>
+                @endforeach
+            </select>
+            <label for="harga_barang" class="form-label">Harga Barang</label>
+            <input type="number" class="form-control harga-barang" name="harga_barang[]" readonly>
+            <label for="kuantitas" class="form-label">Kuantitas</label>
+            <input type="number" class="form-control kuantitas" name="kuantitas[]">
+            <label for="total_harga" class="form-label">Total Harga</label>
+            <input type="number" class="form-control total-harga" name="total_harga[]" readonly>
+            <button type="button" class="btn btn-danger remove-produk" style="margin-top: 10px;">Remove</button>
+        </div>
     </div>
-    <div class="mb-3">
-        <label for="harga_barang" class="form-label">Harga Barang</label>
-        <input type="number" class="form-control disabled" id="harga_barang" name="harga_barang" readonly>
+    <button type="button" class="btn btn-primary" id="addMore">Add More</button>
+    <div class="mt-5">
+        <label for="total_harga" class="form-label ">Total seluruh Harga</label>
+        <input type="number" class="form-control gross_amount " name="gross_amount" readonly>
     </div>
-    <div class="mb-3">
-        <label for="kuantitas" class="form-label">Kuantitas</label>
-        <input type="number" class="form-control" id="kuantitas" name="kuantitas">
-    </div>
-    <div class="mb-3">
-        <label for="total_harga" class="form-label">Total Harga</label>
-        <input type="number"  class="form-control disabled" id="total_harga" name="total_harga" readonly>
-    </div>
+
+
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">Cash</button>
+        <button type="button" id="non-cash" class="btn btn-primary">Non Cash</button>
     </div>
 </form>
+
 @endsection
 
 @section('title_modal_print_penjualan', 'Tambah Print Penjualan')
@@ -135,4 +152,5 @@
 
 @section('scripts')
 <script src="{{asset("js/custom/list_penjualan.js")}}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endsection

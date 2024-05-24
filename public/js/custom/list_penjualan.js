@@ -128,25 +128,163 @@ exportButton.addEventListener('click', function () {
 });
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("produk").addEventListener("change", function () {
-        var selectedProduct = this.value;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/admin/transaksi/penjualan/getProductPrice/" + selectedProduct, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var response = JSON.parse(xhr.responseText);
-                document.getElementById("harga_barang").value = response.harga_jual;
-            }
-        };
-        xhr.send();
+    var produkContainer = document.getElementById("produk-container");
+    var addMoreButton = document.getElementById("addMore");
+    var grossAmountInput = document.querySelector('.gross_amount');
+
+    function updateGrossAmount() {
+        let totalGross = 0;
+        document.querySelectorAll('.total-harga').forEach(function (input) {
+            totalGross += parseFloat(input.value) || 0;
+        });
+        grossAmountInput.value = Math.round(totalGross); // Convert to integer
+    }
+
+    addMoreButton.addEventListener("click", function () {
+        var newProdukItem = document.querySelector(".produk-item").cloneNode(true);
+        newProdukItem.querySelectorAll("input").forEach(input => input.value = ""); // Clear input values
+        produkContainer.appendChild(newProdukItem);
+
+        // Reassign event listeners for the new item
+        assignEventListeners(newProdukItem);
+        updateGrossAmount(); // Update gross amount after adding new item
     });
 
-    document.getElementById("kuantitas").addEventListener("input", function () {
-        var hargaBarang = parseFloat(document.getElementById("harga_barang").value);
-        var kuantitas = parseInt(this.value);
-        var totalHarga = hargaBarang * kuantitas;
-        document.getElementById("total_harga").value = totalHarga;
+    produkContainer.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("remove-produk")) {
+            e.target.parentElement.remove();
+            updateGrossAmount(); // Update gross amount after removing item
+        }
     });
+
+    function assignEventListeners(item) {
+        item.querySelector(".produk-select").addEventListener("change", function () {
+            var selectedProduct = this.value;
+            var hargaBarangInput = item.querySelector(".harga-barang");
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/admin/transaksi/penjualan/getProductPrice/" + selectedProduct, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    hargaBarangInput.value = response.harga_jual;
+                }
+            };
+            xhr.send();
+        });
+
+        item.querySelector(".kuantitas").addEventListener("input", function () {
+            var hargaBarang = parseFloat(item.querySelector(".harga-barang").value);
+            var kuantitas = parseInt(this.value);
+            var totalHarga = hargaBarang * kuantitas;
+            item.querySelector(".total-harga").value = totalHarga;
+            updateGrossAmount(); // Update gross amount on quantity change
+        });
+    }
+
+    // Initial assignment of event listeners
+    document.querySelectorAll(".produk-item").forEach(assignEventListeners);
+    updateGrossAmount(); // Initial calculation of gross amount
+});
+
+document.getElementById('non-cash').onclick = function () {
+    var form = document.getElementById('form-penjualan');
+    var formData = new FormData(form);
+    fetch('/admin/transaksi/penjualan/non-cash/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.snap_token) {
+            snap.pay(data.snap_token, {
+                // Optional
+                onSuccess: function(result) {
+                    fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify(result)
+                    });
+                },
+                // Optional
+                onPending: function(result) {
+                    fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify(result)
+                    });
+                    alert("status transaksi :" (result))
+                },
+                // Optional
+                onError: function(result) {
+                    fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify(result)
+                    });
+                }
+            });
+        } else {
+            alert('Failed to get snap token');
+        }
+    });
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+    const orderId = "{{ $item->order_id_midtrans }}";
+
+    if (orderId) {
+        fetch('/admin/transaksi/penjualan/bayar-nanti', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ order_id: orderId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.snap_token) {
+                window.snap.pay(data.snap_token);
+            } else {
+                console.error('Snap token not found');
+            }
+        })
+        .catch(error => console.error('Error fetching snap token:', error));
+    }
+});
+
+document.querySelector('.bayar_nanti').addEventListener('click', function() {
+    const orderId = this.getAttribute('data-order-id');
+
+    fetch('/admin/transaksi/penjualan/bayar-nanti', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ order_id: orderId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.snap_token) {
+            window.snap.pay(data.snap_token);
+        } else {
+            console.error('Snap token not found');
+        }
+    })
+    .catch(error => console.error('Error fetching snap token:', error));
 });

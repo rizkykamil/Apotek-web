@@ -19,18 +19,18 @@ class PaymentController extends Controller
         Config::$clientKey = config('midtrans.client_key');
         Config::$is3ds = true;
         Config::$isSanitized = true;
-
         $params = [
             'transaction_details' => [
                 'order_id' => uniqid(),
-                'gross_amount' => $request->amount,
+                'gross_amount' => $request->gross_amount,
             ],
-            'customer_details' => [
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-            ],
+            
+            // 'customer_details' => [
+            //     'first_name' => $request->first_name,
+            //     'last_name' => $request->last_name,
+            //     'email' => $request->email,
+            //     'phone' => $request->phone,
+            // ],
         ];
 
         try {
