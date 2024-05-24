@@ -98,10 +98,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/', function () {
             return view('admin.payment.index');
         });
-
-        // Route::post('/create-transaction', [PaymentController::class, 'createTransaction'])->name('create-transaction');
-        // Route::post('/notification-handler', [PaymentController::class, 'handleNotification']);
-        
         Route::post('/process-payment', [PaymentController::class, 'createTransaction'])->name('process-payment');
         Route::post('/notification-handler', [PaymentController::class, 'handleNotification']);
     });
