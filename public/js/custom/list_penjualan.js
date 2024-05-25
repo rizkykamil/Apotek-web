@@ -242,7 +242,6 @@ document.getElementById('non-cash').onclick = function () {
         }
     });
 };
-
 document.querySelectorAll('.bayar_nanti').forEach(button => {
     button.addEventListener('click', function() {
         const orderId = this.getAttribute('data-order-id');
@@ -255,44 +254,62 @@ document.querySelectorAll('.bayar_nanti').forEach(button => {
             },
             body: JSON.stringify({ order_id: orderId })
         })
-        .then(response => {
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.snap_token) {
                 snap.pay(data.snap_token, {
-                    // Optional
                     onSuccess: function(result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                             },
                             body: JSON.stringify(result)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Pembayaran berhasil!');
+                                // Optionally, you can refresh the page or update the status in the table
+                                location.reload();
+                            }
                         });
                     },
-                    // Optional
                     onPending: function(result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                             },
                             body: JSON.stringify(result)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Pembayaran tertunda!');
+                                // Optionally, you can refresh the page or update the status in the table
+                                location.reload();
+                            }
                         });
-                        alert("status transaksi :" (result))
                     },
-                    // Optional
                     onError: function(result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                             },
                             body: JSON.stringify(result)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Pembayaran gagal!');
+                                // Optionally, you can refresh the page or update the status in the table
+                                location.reload();
+                            }
                         });
                     }
                 });

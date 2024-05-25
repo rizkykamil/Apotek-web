@@ -182,7 +182,7 @@ class PenjualanController extends Controller
 
 
         try {
-            $snapToken = Snap::getSnapToken($params);            
+            $snapToken = Snap::getSnapToken($params);
             foreach ($produkArray as $index => $produkId) {
                 $penjualan = Penjualan::where('produk_id', $produkId)->whereNull('order_id_midtrans')->first();
                 if ($penjualan) {
@@ -211,7 +211,6 @@ class PenjualanController extends Controller
 
         foreach ($penjualans as $penjualan) {
             if ($penjualan) {
-                
                 if ($transaction == 'capture') {
                     if ($type == 'credit_card') {
                         if ($fraud == 'challenge') {
@@ -243,21 +242,16 @@ class PenjualanController extends Controller
     {
         $orderId = $request->order_id;
         $order = Penjualan::where('order_id_midtrans', $orderId)->first();
-    
+
         if ($order && $order->status == 'pending') {
             return response()->json(['snap_token' => $order->snap_token]);
         }
 
-        // update status didatabase jika order sudah di bayar
-        if ($order && $order->status == 'success') {
-            $order->status = 'success';
-            $order->save();
-            return response()->json(['error' => 'Order already paid'], 400);
-        }
         
+
         return response()->json(['error' => 'Order not found or not pending'], 404);
     }
-    
+
 
 
 }

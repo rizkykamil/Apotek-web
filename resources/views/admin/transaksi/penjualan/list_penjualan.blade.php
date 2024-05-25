@@ -78,7 +78,6 @@
                         @else
                         @endif
                     </td>
-                    {{-- <a href="{{route('admin.transaksi.penjualan.detail', $item->id)}}" class="btn btn-primary btn-sm">Detail</a> --}}
                 </tr>
                 @endforeach
             </tbody>
