@@ -1,4 +1,3 @@
-//data table
 $(document).ready(function () {
     var table = $('#table_penjualan').DataTable({
         searching: true,
@@ -9,7 +8,7 @@ $(document).ready(function () {
     });
     let token = $('meta[name="csrf-token"]').attr('content');
 
-    // Fungsi untuk menerapkan filter tanggal
+
     function filterByDate(startDate, endDate) {
         $.ajax({
             url: '/admin/transaksi/penjualan/filter_penjualan',
@@ -19,7 +18,7 @@ $(document).ready(function () {
             },
             data: {
                 start_date: startDate,
-                // end_date + 1 day, karena filter menggunakan '<' dan '>'
+
                 end_date: moment(endDate).add(1, 'days').format('YYYY-MM-DD')
             },
             dataType: 'json',
@@ -62,7 +61,7 @@ const printableContent = document.getElementById('printableContent');
 
 printButton.addEventListener('click', function () {
     if (!startDateInput.value || !endDateInput.value) {
-        // sweet alert
+
         Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -71,7 +70,7 @@ printButton.addEventListener('click', function () {
         return;
     }
     if (startDateInput.value > endDateInput.value) {
-        // sweet alert
+
         Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -106,7 +105,7 @@ printButton.addEventListener('click', function () {
 
 exportButton.addEventListener('click', function () {
     if (!startDateInput.value || !endDateInput.value) {
-        // sweet alert
+
         Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -116,7 +115,7 @@ exportButton.addEventListener('click', function () {
     }
 
     if (startDateInput.value > endDateInput.value) {
-        // sweet alert
+
         Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -138,23 +137,23 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.total-harga').forEach(function (input) {
             totalGross += parseFloat(input.value) || 0;
         });
-        grossAmountInput.value = Math.round(totalGross); // Convert to integer
+        grossAmountInput.value = Math.round(totalGross);
     }
 
     addMoreButton.addEventListener("click", function () {
         var newProdukItem = document.querySelector(".produk-item").cloneNode(true);
-        newProdukItem.querySelectorAll("input").forEach(input => input.value = ""); // Clear input values
+        newProdukItem.querySelectorAll("input").forEach(input => input.value = "");
         produkContainer.appendChild(newProdukItem);
 
-        // Reassign event listeners for the new item
+
         assignEventListeners(newProdukItem);
-        updateGrossAmount(); // Update gross amount after adding new item
+        updateGrossAmount();
     });
 
     produkContainer.addEventListener("click", function (e) {
         if (e.target && e.target.classList.contains("remove-produk")) {
             e.target.parentElement.remove();
-            updateGrossAmount(); // Update gross amount after removing item
+            updateGrossAmount();
         }
     });
 
@@ -179,153 +178,155 @@ document.addEventListener("DOMContentLoaded", function () {
             var kuantitas = parseInt(this.value);
             var totalHarga = hargaBarang * kuantitas;
             item.querySelector(".total-harga").value = totalHarga;
-            updateGrossAmount(); // Update gross amount on quantity change
+            updateGrossAmount();
         });
     }
 
-    // Initial assignment of event listeners
+
     document.querySelectorAll(".produk-item").forEach(assignEventListeners);
-    updateGrossAmount(); // Initial calculation of gross amount
+    updateGrossAmount();
 });
 
 document.getElementById('non-cash').onclick = function () {
     var form = document.getElementById('form-penjualan');
     var formData = new FormData(form);
     fetch('/admin/transaksi/penjualan/non-cash/', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.snap_token) {
-            snap.pay(data.snap_token, {
-                // Optional
-                onSuccess: function(result) {
-                    fetch('/admin/transaksi/penjualan/notification-non-cash', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        },
-                        body: JSON.stringify(result)
-                    });
-                },
-                // Optional
-                onPending: function(result) {
-                    fetch('/admin/transaksi/penjualan/notification-non-cash', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        },
-                        body: JSON.stringify(result)
-                    });
-                    alert("status transaksi :" (result))
-                },
-                // Optional
-                onError: function(result) {
-                    fetch('/admin/transaksi/penjualan/notification-non-cash', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        },
-                        body: JSON.stringify(result)
-                    });
-                }
-            });
-        } else {
-            alert('Failed to get snap token');
-        }
-    });
-};
-
-document.querySelectorAll('.bayar_nanti').forEach(button => {
-    button.addEventListener('click', function() {
-        const orderId = this.getAttribute('data-order-id');
-
-        fetch('/admin/transaksi/penjualan/bayar-nanti', {
             method: 'POST',
+            body: formData,
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ order_id: orderId })
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            }
         })
         .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                if (data.error === 'Snap token expired') {
-                    alert('Token pembayaran sudah kedaluwarsa. Silakan lakukan pemesanan ulang.');
-                    // Optionally, you can refresh the page or update the status in the table
-                    location.reload();
-                } else {
-                    console.error(data.error);
-                }
-            } else if (data.snap_token) {
+            if (data.snap_token) {
                 snap.pay(data.snap_token, {
-                    onSuccess: function(result) {
+
+                    onSuccess: function (result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                             },
                             body: JSON.stringify(result)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                alert('Pembayaran berhasil!');
-                                // Optionally, you can refresh the page or update the status in the table
-                                location.reload();
-                            }
                         });
                     },
-                    onPending: function(result) {
+
+                    onPending: function (result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                             },
                             body: JSON.stringify(result)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                alert('Pembayaran tertunda!');
-                                // Optionally, you can refresh the page or update the status in the table
-                                location.reload();
-                            }
                         });
+                        alert("status transaksi :"(result))
                     },
-                    onError: function(result) {
+
+                    onError: function (result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                             },
                             body: JSON.stringify(result)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                alert('Pembayaran gagal!');
-                                // Optionally, you can refresh the page or update the status in the table
-                                location.reload();
-                            }
                         });
                     }
                 });
             } else {
-                console.error('Snap token not found');
+                alert('Failed to get snap token');
             }
-        })
-        .catch(error => console.error('Error fetching snap token:', error));
+        });
+};
+
+document.querySelectorAll('.bayar_nanti').forEach(button => {
+    button.addEventListener('click', function () {
+        const orderId = this.getAttribute('data-order-id');
+
+        fetch('/admin/transaksi/penjualan/bayar-nanti', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    order_id: orderId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    if (data.error === 'Snap token expired') {
+                        alert('Token pembayaran sudah kedaluwarsa. Silakan lakukan pemesanan ulang.');
+
+                        location.reload();
+                    } else {
+                        console.error(data.error);
+                    }
+                } else if (data.snap_token) {
+                    snap.pay(data.snap_token, {
+                        onSuccess: function (result) {
+                            fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify(result)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        alert('Pembayaran berhasil!');
+
+                                        location.reload();
+                                    }
+                                });
+                        },
+                        onPending: function (result) {
+                            fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify(result)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        alert('Pembayaran tertunda!');
+
+                                        location.reload();
+                                    }
+                                });
+                        },
+                        onError: function (result) {
+                            fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify(result)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        alert('Pembayaran gagal!');
+
+                                        location.reload();
+                                    }
+                                });
+                        }
+                    });
+                } else {
+                    console.error('Snap token not found');
+                }
+            })
+            .catch(error => console.error('Error fetching snap token:', error));
     });
 });
