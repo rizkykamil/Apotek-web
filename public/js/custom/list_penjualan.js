@@ -243,34 +243,9 @@ document.getElementById('non-cash').onclick = function () {
     });
 };
 
-document.addEventListener("DOMContentLoaded", function() {
-    const orderId = "{{ $item->order_id_midtrans }}";
-
-    if (orderId) {
-        fetch('/admin/transaksi/penjualan/bayar-nanti', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ order_id: orderId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.snap_token) {
-                window.snap.pay(data.snap_token);
-            } else {
-                console.error('Snap token not found');
-            }
-        })
-        .catch(error => console.error('Error fetching snap token:', error));
-    }
-});
-
 document.querySelectorAll('.bayar_nanti').forEach(button => {
     button.addEventListener('click', function() {
         const orderId = this.getAttribute('data-order-id');
-        console.log('Order ID:', orderId);
 
         fetch('/admin/transaksi/penjualan/bayar-nanti', {
             method: 'POST',
@@ -281,14 +256,46 @@ document.querySelectorAll('.bayar_nanti').forEach(button => {
             body: JSON.stringify({ order_id: orderId })
         })
         .then(response => {
-            console.log('Fetch response:', response);
             return response.json();
         })
         .then(data => {
-            console.log('Fetch data:', data);
             if (data.snap_token) {
-                console.log('Snap token:', data.snap_token);
-                window.snap.pay(data.snap_token);
+                snap.pay(data.snap_token, {
+                    // Optional
+                    onSuccess: function(result) {
+                        fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            },
+                            body: JSON.stringify(result)
+                        });
+                    },
+                    // Optional
+                    onPending: function(result) {
+                        fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            },
+                            body: JSON.stringify(result)
+                        });
+                        alert("status transaksi :" (result))
+                    },
+                    // Optional
+                    onError: function(result) {
+                        fetch('/admin/transaksi/penjualan/notification-non-cash', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            },
+                            body: JSON.stringify(result)
+                        });
+                    }
+                });
             } else {
                 console.error('Snap token not found');
             }

@@ -138,7 +138,6 @@ class PenjualanController extends Controller
 
         $produkDetails = [];
 
-        // Menghitung total harga dan mengurangi stok
         foreach ($produkArray as $index => $produkId) {
             $kuantitas = $kuantitasArray[$index];
             $totalHarga = $totalHargaArray[$index];
@@ -150,7 +149,6 @@ class PenjualanController extends Controller
             $stok->jumlah -= $kuantitas;
             $stok->save();
 
-            // Menyimpan data penjualan tanpa order_id_midtrans
             $penjualan = new Penjualan();
             $penjualan->produk_id = $produkId;
             $penjualan->kuantitas = $kuantitas;
@@ -167,14 +165,12 @@ class PenjualanController extends Controller
             $gross_amount += $totalHarga;
         }
 
-        // Mengatur konfigurasi Midtrans
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$clientKey = config('midtrans.client_key');
         Config::$is3ds = true;
         Config::$isSanitized = true;
 
-        // Menyiapkan parameter untuk Midtrans
         $order_id = uniqid();
         $params = [
             'transaction_details' => [
@@ -186,7 +182,6 @@ class PenjualanController extends Controller
 
 
         try {
-            // Mendapatkan Snap Token dari Midtrans
             $snapToken = Snap::getSnapToken($params);            
             foreach ($produkArray as $index => $produkId) {
                 $penjualan = Penjualan::where('produk_id', $produkId)->whereNull('order_id_midtrans')->first();
@@ -212,12 +207,11 @@ class PenjualanController extends Controller
         $orderId = $notification->order_id;
         $fraud = $notification->fraud_status;
 
-        // Cari semua penjualan berdasarkan order_id_midtrans
         $penjualans = Penjualan::where('order_id_midtrans', $orderId)->get();
 
         foreach ($penjualans as $penjualan) {
             if ($penjualan) {
-                // Update status berdasarkan status transaksi dari Midtrans
+                
                 if ($transaction == 'capture') {
                     if ($type == 'credit_card') {
                         if ($fraud == 'challenge') {
@@ -253,7 +247,14 @@ class PenjualanController extends Controller
         if ($order && $order->status == 'pending') {
             return response()->json(['snap_token' => $order->snap_token]);
         }
-    
+
+        // update status didatabase jika order sudah di bayar
+        if ($order && $order->status == 'success') {
+            $order->status = 'success';
+            $order->save();
+            return response()->json(['error' => 'Order already paid'], 400);
+        }
+        
         return response()->json(['error' => 'Order not found or not pending'], 404);
     }
     
