@@ -242,6 +242,7 @@ document.getElementById('non-cash').onclick = function () {
         }
     });
 };
+
 document.querySelectorAll('.bayar_nanti').forEach(button => {
     button.addEventListener('click', function() {
         const orderId = this.getAttribute('data-order-id');
@@ -256,7 +257,15 @@ document.querySelectorAll('.bayar_nanti').forEach(button => {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.snap_token) {
+            if (data.error) {
+                if (data.error === 'Snap token expired') {
+                    alert('Token pembayaran sudah kedaluwarsa. Silakan lakukan pemesanan ulang.');
+                    // Optionally, you can refresh the page or update the status in the table
+                    location.reload();
+                } else {
+                    console.error(data.error);
+                }
+            } else if (data.snap_token) {
                 snap.pay(data.snap_token, {
                     onSuccess: function(result) {
                         fetch('/admin/transaksi/penjualan/notification-non-cash', {

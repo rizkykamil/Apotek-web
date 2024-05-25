@@ -7,6 +7,7 @@ use App\Models\Stok;
 use Midtrans\Config;
 use App\Models\Produk;
 use App\Models\Penjualan;
+use Midtrans\Transaction;
 use Midtrans\Notification;
 use Illuminate\Http\Request;
 use App\Exports\PenjualanExport;
@@ -243,15 +244,43 @@ class PenjualanController extends Controller
         $orderId = $request->order_id;
         $order = Penjualan::where('order_id_midtrans', $orderId)->first();
 
-        if ($order && $order->status == 'pending') {
-            return response()->json(['snap_token' => $order->snap_token]);
-        }
+        if ($order) {
+            // // Periksa apakah token Snap sudah kedaluwarsa
+            if ($order->status == 'pending' && $this->isSnapTokenExpired($order->snap_token)) {
+                $order->status = 'cancel';
+                $order->save();
+                // refresh halaman
+                return response()->json(['error' => 'Token Snap sudah kedaluwarsa'], 404);
+            }
 
-        
+            if ($order->status == 'pending') {
+                return response()->json(['snap_token' => $order->snap_token]);
+            }
+
+
+        }
 
         return response()->json(['error' => 'Order not found or not pending'], 404);
     }
 
+    private function isSnapTokenExpired($snapToken)
+    {
+        // Implementasikan logika untuk memeriksa status token Snap
+        // Anda dapat memanggil API Midtrans untuk memeriksa status token
+        // Misalnya, menggunakan Midtrans API client untuk memeriksa status transaksi
+        try {
+            $status = \Midtrans\Transaction::status($snapToken);
+            if ($status->transaction_status == 'expire') {
+                return true;
+            }
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            if ($e->getCode() == 404) {
+                return true; // Jika transaksi tidak ditemukan, anggap token sudah kedaluwarsa
+            }
+        }
+        return false;
+    }
 
 
 }
