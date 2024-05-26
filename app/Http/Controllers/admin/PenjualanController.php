@@ -196,6 +196,7 @@ class PenjualanController extends Controller
 
     public function notificationNonCash(Request $request)
     {
+
         $notification = new Notification();
         $transaction = $notification->transaction_status;
         $type = $notification->payment_type;
@@ -239,12 +240,6 @@ class PenjualanController extends Controller
         $order = Penjualan::where('order_id_midtrans', $orderId)->first();
 
         if ($order) {
-            if ($order->status == 'pending' && $this->isSnapTokenExpired($order->snap_token)) {
-                $order->status = 'cancel';
-                $order->save();
-                return response()->json(['error' => 'Token Snap sudah kedaluwarsa'], 404);
-            }
-
             if ($order->status == 'pending') {
                 return response()->json(['snap_token' => $order->snap_token]);
             }
@@ -253,18 +248,19 @@ class PenjualanController extends Controller
         return response()->json(['error' => 'Order not found or not pending'], 404);
     }
 
-    private function isSnapTokenExpired($snapToken)
-    {
-        try {
-            $status = Transaction::status($snapToken);
-            if ($status->transaction_status == 'expire') {
-                return true;
-            }
-        } catch (\Exception $e) {
-            if ($e->getCode() == 404) {
-                return true;
-            }
+    public function expiredPayment(Request $request) {
+        $orderId = $request->order_id;
+        $order = Penjualan::where('order_id_midtrans', $orderId)->first();
+
+        // jadikan order status cancel
+        if ($order) {
+            $order->status = 'cancel';
+            $order->save();
+            return redirect()->route('admin.transaksi.penjualan.list')->with('error', 'Order expired');
         }
-        return false;
+
+
+
+        return response()->json(['error' => 'Order not found or not pending'], 404);
     }
 }

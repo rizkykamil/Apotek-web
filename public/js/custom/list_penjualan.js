@@ -259,69 +259,26 @@ document.querySelectorAll('.bayar_nanti').forEach(button => {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    if (data.error === 'Snap token expired') {
-                        alert('Token pembayaran sudah kedaluwarsa. Silakan lakukan pemesanan ulang.');
-
-                        location.reload();
+                    if (data.error == 'Token Snap sudah kedaluwarsa') {
+                        Swal.fire({
+                            error: "error",
+                            title: "Oops...",
+                            text: "Token pembayaran sudah kedaluwarsa. Silakan lakukan pemesanan ulang.",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: "Refresh",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
                     } else {
+                        alert('Terjadi kesalahan saat melakukan pembayaran. Silakan coba lagi.');
                         console.error(data.error);
                     }
                 } else if (data.snap_token) {
                     snap.pay(data.snap_token, {
-                        onSuccess: function (result) {
-                            fetch('/admin/transaksi/penjualan/notification-non-cash', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                    },
-                                    body: JSON.stringify(result)
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.status === 'success') {
-                                        alert('Pembayaran berhasil!');
-
-                                        location.reload();
-                                    }
-                                });
-                        },
-                        onPending: function (result) {
-                            fetch('/admin/transaksi/penjualan/notification-non-cash', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                    },
-                                    body: JSON.stringify(result)
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.status === 'success') {
-                                        alert('Pembayaran tertunda!');
-
-                                        location.reload();
-                                    }
-                                });
-                        },
-                        onError: function (result) {
-                            fetch('/admin/transaksi/penjualan/notification-non-cash', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                    },
-                                    body: JSON.stringify(result)
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.status === 'success') {
-                                        alert('Pembayaran gagal!');
-
-                                        location.reload();
-                                    }
-                                });
-                        }
+                        
                     });
                 } else {
                     console.error('Snap token not found');

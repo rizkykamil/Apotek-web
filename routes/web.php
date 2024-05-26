@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             Route::post('/non-cash',[PenjualanController::class, 'nonCash'])->name('admin.transaksi.penjualan.nonCash');
             Route::post('/notification-non-cash',[PenjualanController::class, 'notificationNonCash'])->name('admin.transaksi.penjualan.notificationNonCash');
             Route::post('/bayar-nanti', [PenjualanController::class, 'getSnapTokenByOrderId'])->name('admin.transaksi.penjualan.getSnapTokenByOrderId');
+            Route::get('/expired-payment', [PenjualanController::class, 'expiredPayment'])->name('admin.transaksi.penjualan.expiredPayment');
         });
 
         Route::group(['prefix' => 'pembelian'], function () {
